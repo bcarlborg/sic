@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Enable nullglob to avoid issues when no files match the glob.
+# Without this option, globs that do not evaluate to a file in an array
+# will evaluate to the glob string itself
+shopt -s nullglob
+
+die () {
+	echo "ERROR: $1. Aborting!"
+	exit 1
+}
+
+#
+# Identify the sic project path
+# (by getting the parent dir of this script's dir)
+#
+
+# Absolute path to this script
+SCRIPT=$(readlink -f "${0}")
+# Absolute path this script is in
+SCRIPT_PATH=$(dirname "${SCRIPT}")
+# Absolute root project path
+ROOTPATH=$(dirname "${SCRIPT_PATH}")
+
+#
+# Format C files
+#
+
+C_FILES_ARRAY=( "${ROOTPATH}"/**/*.c )
+C_FILES="${C_FILES_ARRAY[*]}"
+
+echo "formatting *.c files"
+if [ -n "${C_FILES}" ]; then
+    clang-format -i "${C_FILES}" || die "could not format c files"
+else
+    die "Script could not find any *.c files, this likeley means the \
+         the script is not correctly identifying the root project dir"
+fi
+
+
+#
+# Format Header Files
+#
+
+H_FILES_ARRAY=( "${ROOTPATH}"/**/*.h )
+H_FILES="${H_FILES_ARRAY[*]}"
+
+echo "formatting *.h files"
+if [ -n "${H_FILES[*]}" ]; then
+    clang-format -i ../**/*.h || die "could not format header files"
+else
+    echo "  no *.h files found to format."
+fi
