@@ -31,7 +31,7 @@ $(SIC_EXECUTABLE_PATH): $(SIC_OBJ_PATHS)
 	$(LD) -o $@ $^
 
 %.o: %.c 
-	$(CC) -o $@ -c $^
+	$(SIC_CC) -o $@ -c $^
 
 clean:
 	rm -rf $(SIC_EXECUTABLE_PATH) $(SIC_SRC_DIR)/*.o

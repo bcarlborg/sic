@@ -1,0 +1,6 @@
+---
+# this specifies the list of additional checks we want
+# in our project beyond the clang-tidy defaults
+Checks: "bugprone-*,cert-*,concurrency-*"
+---
+

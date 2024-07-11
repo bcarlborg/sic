@@ -1,6 +1,9 @@
 # Executables
 sic
 
+# Build databases
+compile_commands.json
+
 # Prerequisites
 *.d
 
